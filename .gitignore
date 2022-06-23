@@ -2,5 +2,5 @@
 /.idea
 /db.sqlite3
 /static
-/Notes/static/libs
+/Recipes/static/libs
 /media
