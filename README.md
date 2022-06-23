@@ -1,0 +1,2 @@
+# DjangoRecipes
+Сайт рецептов
