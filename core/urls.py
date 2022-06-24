@@ -4,5 +4,6 @@ import core.views
 
 urlpatterns = [
     path("", core.views.home, name="home"),
-    path("recipe/<int:pk>/", core.views.RecipeView.as_view(), name="recipe_detail")
+    path("recipes/", core.views.RecipeListView.as_view(), name="recipe_list"),
+    path("recipes/<int:pk>/", core.views.RecipeDetailView.as_view(), name="recipe_detail"),
 ]

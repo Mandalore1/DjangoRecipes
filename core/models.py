@@ -19,6 +19,7 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=150, blank=False, verbose_name="Название")
+    description = models.TextField(blank=True, null=True, verbose_name="Описание")
     content = models.TextField(blank=True, null=True, verbose_name="Рецепт")
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient", related_name="recipes",
                                          verbose_name="Ингредиенты")
