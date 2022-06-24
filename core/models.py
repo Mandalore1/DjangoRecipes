@@ -23,6 +23,9 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient", related_name="recipes",
                                          verbose_name="Ингредиенты")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes", verbose_name="Пользователь")
+    image = models.ImageField(upload_to="recipe_images", verbose_name="Изображение", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
     is_published = models.BooleanField(default=False, verbose_name="Опубликован")
 
     def __str__(self):
