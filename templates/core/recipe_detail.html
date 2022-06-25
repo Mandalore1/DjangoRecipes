@@ -36,4 +36,10 @@
         <p>{{ recipe.content|linebreaks }}</p>
     </div>
 </section>
+{% if recipe.user == request.user %}
+{% if not recipe.is_published %}
+<p class="mt-3">Рецепт еще не опубликован. <a href="{% url 'recipe_publish' recipe.pk %}">Опубликовать</a></p>
+{% endif %}
+<a href="{% url 'recipe_update' recipe.pk %}" class="btn btn-primary mt-3">Изменить рецепт</a>
+{% endif %}
 {% endblock content %}

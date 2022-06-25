@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Изменение рецепта{% endblock title %}
+
+{% block h1 %}Изменение рецепта {{ recipe.title }}{% endblock h1 %}
+
+{% block content %}
+
+<form class="mt-2 mb-2" action="{% url 'recipe_update' recipe.pk %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Изменить</button>
+    <a href="{{ recipe.get_absolute_url }}" class="btn btn-danger btn-block">Отмена</a>
+</form>
+
+{% endblock content %}
