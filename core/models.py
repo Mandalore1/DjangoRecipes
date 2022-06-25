@@ -3,6 +3,7 @@ from django.db import models
 
 
 # Create your models here.
+from django.urls import reverse
 
 
 class Ingredient(models.Model):
@@ -30,6 +31,9 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
     is_published = models.BooleanField(default=False, verbose_name="Опубликован")
+
+    def get_absolute_url(self):
+        return reverse("recipe_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.title
