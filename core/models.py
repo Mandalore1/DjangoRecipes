@@ -6,6 +6,7 @@ from django.db import models
 
 
 class Ingredient(models.Model):
+    """Ингредиент"""
     name = models.CharField(unique=True, max_length=150, blank=False, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="Slug")
 
@@ -18,6 +19,7 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    """Рецепт"""
     title = models.CharField(max_length=150, blank=False, verbose_name="Название")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
     content = models.TextField(blank=True, null=True, verbose_name="Рецепт")
@@ -38,6 +40,7 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
+    """Ингредиент рецепта"""
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, verbose_name="Рецепт")
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, verbose_name="Ингредиент")
     quantity = models.IntegerField(verbose_name="Количество")

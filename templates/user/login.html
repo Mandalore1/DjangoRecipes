@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock title %}
+{% block h1 %}Войти в аккаунт{% endblock h1 %}
+
+{% block content %}
+
+{% if form.errors %}
+{% for error in errors %}
+<div class="alert alert-danger" role="alert">{{ error }}</div>
+{% endfor %}
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>У вас нет доступа к запрошенной странице.
+        Пожалуйста, войдите в аккаунт, который разрешает просматривать запрошенную страницу.</p>
+    {% else %}
+    <p>Пожалуйста, войдите в аккаунт, чтобы просмотреть эту страницу.</p>
+    {% endif %}
+{% endif %}
+
+<form class="mt-2 mb-2" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Войти</button>
+    <p class="mt-3">Еще не зарегистрированы? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{% endblock %}

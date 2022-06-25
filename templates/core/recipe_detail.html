@@ -12,6 +12,11 @@
 <div class="mb-3">
     <strong>Автор: </strong>{{ recipe.user.username }}
 </div>
+{% if recipe.description %}
+<p class="mb-3">
+    {{ recipe.description }}
+</p>
+{% endif %}
 <section class="row">
     <div class="col-lg-4">
         {% if recipe.image %}

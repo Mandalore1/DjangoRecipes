@@ -7,10 +7,12 @@ from core.models import Recipe, RecipeIngredient
 
 
 def home(request):
+    """Главная страница"""
     return render(request, "home.html")
 
 
 class RecipeDetailView(DetailView):
+    """Информация о рецепте"""
     model = Recipe
     context_object_name = "recipe"
 
@@ -22,6 +24,7 @@ class RecipeDetailView(DetailView):
 
 
 class RecipeListView(ListView):
+    """Список рецептов"""
     model = Recipe
     queryset = Recipe.objects.filter(is_published=True)
     context_object_name = "recipes"

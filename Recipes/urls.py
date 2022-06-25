@@ -24,6 +24,7 @@ from Recipes import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("core.urls")),
+    path('user/', include("user.urls")),
 ]
 
 if settings.DEBUG:
