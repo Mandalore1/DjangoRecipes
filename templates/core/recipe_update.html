@@ -6,11 +6,40 @@
 
 {% block content %}
 
+<p>Ингредиенты:</p>
+{% for ingredient in ingredients %}
+<p>{{ ingredient.ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}
+    <a href="{% url 'delete_ingredient' ingredient.pk %}" class="link link-danger">Удалить</a></p>
+{% endfor %}
+
+<button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#ingredientForm"
+        aria-expanded="false" aria-controls="ingredientForm">
+    Добавить ингредиент
+</button>
+<form class="collapse" id="ingredientForm" action="{% url 'add_ingredient' recipe.pk %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="ingredientName" class="form-label">Название ингредиента</label>
+        <input name="name" type="text" class="form-control" id="ingredientName">
+    </div>
+    <div class="mb-3">
+        <label for="ingredientQuantity" class="form-label">Количество</label>
+        <input name="quantity" type="number" class="form-control" id="ingredientQuantity">
+    </div>
+    <div class="mb-3">
+        <label for="ingredientUnit" class="form-label">Единица измерения</label>
+        <input name="unit" type="text" class="form-control" id="ingredientUnit">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+</form>
+<hr>
+
 <form class="mt-2 mb-2" action="{% url 'recipe_update' recipe.pk %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button type="submit" class="btn btn-primary btn-block">Изменить</button>
+    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
     <a href="{{ recipe.get_absolute_url }}" class="btn btn-danger btn-block">Отмена</a>
 </form>
 
