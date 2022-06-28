@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'ckeditor',
+    'ckeditor_uploader',
+
     'core.apps.CoreConfig',
     'user.apps.UserConfig',
 ]
@@ -135,3 +138,5 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_URL
+
+CKEDITOR_UPLOAD_PATH = "uploads/"

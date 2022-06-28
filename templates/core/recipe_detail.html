@@ -31,9 +31,11 @@
         {% for ingredient in ingredients %}
         <p>{{ ingredient.ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}</p>
         {% endfor %}
-        <hr>
-        <h2>Рецепт:</h2>
-        <p>{{ recipe.content|linebreaks }}</p>
+    </div>
+
+    <div>
+    <h2>Рецепт:</h2>
+    <p>{{ recipe.content|safe }}</p>
     </div>
 </section>
 {% if recipe.user == request.user %}

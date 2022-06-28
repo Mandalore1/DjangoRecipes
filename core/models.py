@@ -1,9 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-
-# Create your models here.
 from django.urls import reverse
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Ingredient(models.Model):
@@ -23,7 +21,7 @@ class Recipe(models.Model):
     """Рецепт"""
     title = models.CharField(max_length=150, blank=False, verbose_name="Название")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
-    content = models.TextField(blank=True, null=True, verbose_name="Рецепт")
+    content = RichTextUploadingField(blank=True, null=True, verbose_name="Рецепт")
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient", related_name="recipes",
                                          verbose_name="Ингредиенты")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes", verbose_name="Пользователь")

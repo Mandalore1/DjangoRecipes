@@ -37,6 +37,7 @@
 
 <form class="mt-2 mb-2" action="{% url 'recipe_update' recipe.pk %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    {{ form.media }}
     {{ form.as_p }}
 
     <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
