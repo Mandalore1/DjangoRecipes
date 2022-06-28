@@ -10,7 +10,7 @@
     <strong>Обновлен: </strong>{{ recipe.updated_at|date }}
 </div>
 <div class="mb-3">
-    <strong>Автор: </strong>{{ recipe.user.username }}
+    <strong>Автор: </strong><a class="link link-primary" href="{% url 'user_info' recipe.user.username %}">{{ recipe.user.username }}</a>
 </div>
 {% if recipe.description %}
 <p class="mb-3">

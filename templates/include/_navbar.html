@@ -1,3 +1,4 @@
+{% load static %}
 <header class="container mb-4">
     <div class="row m-0 gx-0">
         <nav class="col-lg-8 navbar navbar-expand-lg bg-light">
@@ -22,7 +23,13 @@
 
         <div class="col-lg-4 navbar-text">
         {% if request.user.is_authenticated %}
-            Приветствуем, {{ request.user.username }}
+            Приветствуем,
+            {% if request.user.additional_info.avatar %}
+            <img class="rounded" src="{{ request.user.additional_info.avatar.url }}" alt="Аватар" height="50px">
+            {% else %}
+            <img class="rounded" src="{% static 'img/user-placeholder.jpg' %}" alt="Аватар" height="50px">
+            {% endif %}
+            <a class="link link-primary" href="{% url 'user_info' request.user.username %}">{{ request.user.username }}</a>
             &nbsp;|
             <a class="btn btn-outline-primary" href="{% url 'logout' %}">Выйти</a>
         {% else %}
