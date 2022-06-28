@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.db import DatabaseError
 
-from django.views.generic import DetailView, ListView, CreateView, UpdateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
 from core.forms import RecipeCreationForm, RecipeForm
 from core.models import Recipe, RecipeIngredient, Ingredient
@@ -50,6 +51,8 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """Устанавливаем пользователя рецепта перед сохранением"""
+        messages.success(self.request,
+                         "Рецепт успешно добавлен, но еще не опубликован. Измените рецепт и опубликуйте его")
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -66,6 +69,25 @@ class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         return _add_ingredients_to_context(context, self.object)
 
+    def form_valid(self, form):
+        messages.success(self.request, "Рецепт успешно изменен!")
+        return super().form_valid(form)
+
+    def test_func(self):
+        """Тестирует, что пользователь в запросе тот же, что и владелец рецепта"""
+        return self.request.user == self.get_object().user
+
+
+class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """Удаление рецепта"""
+    model = Recipe
+    context_object_name = "recipe"
+    success_url = reverse_lazy("recipe_list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Рецепт успешно удален!")
+        return super().form_valid(form)
+
     def test_func(self):
         """Тестирует, что пользователь в запросе тот же, что и владелец рецепта"""
         return self.request.user == self.get_object().user
@@ -73,6 +95,7 @@ class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @login_required
 def recipe_publish(request, pk):
+    """Публикация рецепта"""
     recipe = get_object_or_404(Recipe, pk=pk)
     if request.user != recipe.user:
         return HttpResponseForbidden()
@@ -85,6 +108,7 @@ def recipe_publish(request, pk):
 
 @login_required
 def add_ingredient(request, pk):
+    """Добавление ингредиента к рецепту"""
     if request.method != "POST":
         return HttpResponseBadRequest
 
@@ -113,6 +137,7 @@ def add_ingredient(request, pk):
 
 @login_required
 def delete_ingredient(request, pk):
+    """Удаление ингредиента рецепта"""
     ingredient = get_object_or_404(RecipeIngredient, pk=pk)
     recipe = ingredient.recipe
     if request.user != recipe.user:
