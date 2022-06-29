@@ -5,6 +5,9 @@
 {% block h1 %}Информация о пользователе {{ user.username }}{% endblock h1 %}
 
 {% block content %}
+{% if request.user == user %}
+<a href="{% url 'user_update_info' user.username %}" class="btn btn-primary">Редактировать информацию</a>
+{% endif %}
 <section class="row">
     <div class="col-lg-4">
         {% if additional_info.avatar %}

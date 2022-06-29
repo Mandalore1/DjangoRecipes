@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование дополнительной информации о пользователе {{ info.user.username }}{% endblock title %}
+
+{% block h1 %}Редактирование дополнительной информации о пользователе {{ info.user.username }}{% endblock h1 %}
+
+{% block content %}
+
+<form class="mt-2 mb-2" action="{% url 'user_update_additional_info' info.user.username %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+</form>
+
+{% endblock content %}
