@@ -6,7 +6,7 @@
 
 {% block content %}
 {% if request.user == user %}
-<a href="{% url 'user_update_info' user.username %}" class="btn btn-primary">Редактировать информацию</a>
+<a href="{% url 'user_update_info' user.username %}" class="btn btn-primary mb-3">Редактировать информацию</a>
 {% endif %}
 <section class="row">
     <div class="col-lg-4">
