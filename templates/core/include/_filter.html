@@ -1,0 +1,5 @@
+<form class="d-flex mb-3" action="{% url 'recipe_filter' %}" method="get" role="search">
+    <input class="form-control me-2" type="search" placeholder="Поиск рецептов по названию" aria-label="Search"
+           name="title" value="{{ request.GET.title }}">
+    <button class="btn btn-outline-success" type="submit">Искать</button>
+</form>

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -41,6 +42,23 @@ class RecipeListView(ListView):
     model = Recipe
     queryset = Recipe.objects.filter(is_published=True)
     context_object_name = "recipes"
+
+
+class RecipeFilterView(ListView):
+    """Фильтр рецептов"""
+    model = Recipe
+    context_object_name = "recipes"
+    template_name_suffix = "_filter"
+
+    def get_queryset(self):
+        queryset = Recipe.objects.filter(is_published=True)
+
+        if "user" in self.request.GET:
+            queryset = queryset.filter(user__username=self.request.GET.get("user"))
+        if "title" in self.request.GET:
+            queryset = queryset.filter(title__icontains=self.request.GET.get("title"))
+
+        return queryset
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):

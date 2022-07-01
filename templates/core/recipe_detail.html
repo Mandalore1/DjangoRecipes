@@ -11,6 +11,7 @@
 </div>
 <div class="mb-3">
     <strong>Автор: </strong><a class="link link-primary" href="{% url 'user_info' recipe.user.username %}">{{ recipe.user.username }}</a>
+    | <a class="link link-primary" href="{% url 'recipe_filter' %}?user={{ recipe.user.username }}">Все рецепты пользователя {{ recipe.user.username }}</a>
 </div>
 {% if recipe.description %}
 <p class="mb-3">

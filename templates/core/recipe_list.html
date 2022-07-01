@@ -5,6 +5,7 @@
 {% block h1 %}Все рецепты{% endblock h1 %}
 
 {% block content %}
+{% include "core/include/_filter.html" %}
 <a href="{% url 'recipe_create'%}" class="btn btn-primary mb-3">Создать новый рецепт</a>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for recipe in recipes %}
