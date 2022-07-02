@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load recipes %}
 
 {% block title %}Информация о пользователе {{ user.username }}{% endblock title %}
 {% block h1 %}Информация о пользователе {{ user.username }}{% endblock h1 %}
@@ -32,4 +33,6 @@
     <p>{{ additional_info.about|linebreaks }}</p>
     </div>
 </section>
+<h2>Последние рецепты пользователя:</h2>
+{% last_recipes user 3 %}
 {% endblock content %}
