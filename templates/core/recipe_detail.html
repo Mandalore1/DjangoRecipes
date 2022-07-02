@@ -2,7 +2,21 @@
 {% load static %}
 
 {% block title %}{{ recipe.title }}{% endblock title %}
-{% block h1 %}{{ recipe.title }}{% endblock h1 %}
+{% block h1 %}
+{{ recipe.title }}
+{% if request.user.is_authenticated %}
+<form class="d-inline" action="{% url 'recipe_add_to_favorite' recipe.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="border-0">
+        {% if recipe.is_favorite %}
+        <i class="bi bi-star-fill" style="color: gold;" title="Убрать из избранного"></i>
+        {% else %}
+        <i class="bi bi-star" style="color: gold;" title="Добавить в избранное"></i>
+        {% endif %}
+    </button>
+</form>
+{% endif %}
+{% endblock h1 %}
 
 {% block content %}
 <div class="mb-3">

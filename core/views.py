@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.db import DatabaseError
+from django.views import View
 
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
@@ -32,10 +32,13 @@ class RecipeDetailView(DetailView):
     context_object_name = "recipe"
 
     def get_object(self, *args, **kwargs):
-        """Увеличиваем счетчик просмотров на 1"""
+        """Увеличиваем счетчик просмотров на 1 и добавляем индикатор добавления в избранное"""
         recipe = super().get_object(*args, **kwargs)
         recipe.views += 1
         recipe.save(update_fields=["views"])
+
+        recipe.is_favorite = recipe.favorited_by.filter(pk=self.request.user.pk).exists()
+
         return recipe
 
     def get_context_data(self, **kwargs):
@@ -137,6 +140,22 @@ class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         """Тестирует, что пользователь в запросе тот же, что и владелец рецепта"""
         return self.request.user == self.get_object().user
+
+
+class RecipeAddToFavorites(LoginRequiredMixin, View):
+    """Добавление в избранное"""
+    def post(self, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, pk=self.kwargs["pk"])
+        user = self.request.user
+
+        # Если запись об избранном существует, удаляем ее
+        if user.favorite_recipes.filter(pk=recipe.pk).exists():
+            user.favorite_recipes.clear()
+        # Иначе добавляем запись
+        else:
+            user.favorite_recipes.add(recipe)
+
+        return redirect("recipe_detail", self.kwargs["pk"])
 
 
 @login_required
