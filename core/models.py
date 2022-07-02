@@ -32,6 +32,8 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
     is_published = models.BooleanField(default=False, verbose_name="Опубликован")
+    favorited_by = models.ManyToManyField(User, related_name="favorite_recipes", verbose_name="Избран пользователями")
+    views = models.PositiveIntegerField(default=1, verbose_name="Количество просмотров")
 
     def get_absolute_url(self):
         return reverse("recipe_detail", kwargs={"pk": self.pk})
