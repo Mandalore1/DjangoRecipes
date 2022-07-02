@@ -31,6 +31,13 @@ class RecipeDetailView(DetailView):
     model = Recipe
     context_object_name = "recipe"
 
+    def get_object(self, *args, **kwargs):
+        """Увеличиваем счетчик просмотров на 1"""
+        recipe = super().get_object(*args, **kwargs)
+        recipe.views += 1
+        recipe.save(update_fields=["views"])
+        return recipe
+
     def get_context_data(self, **kwargs):
         """Добавляем в контекст ингредиенты рецепта"""
         context = super().get_context_data(**kwargs)
