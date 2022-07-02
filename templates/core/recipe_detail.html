@@ -30,7 +30,8 @@
     <div class="col-lg-6">
         <h2>Ингредиенты:</h2>
         {% for ingredient in ingredients %}
-        <p>{{ ingredient.ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}</p>
+        <p><a href="{{ ingredient.ingredient.get_absolute_url }}">
+            {{ ingredient.ingredient.name }}</a> - {{ ingredient.quantity }} {{ ingredient.unit }}</p>
         {% endfor %}
     </div>
 

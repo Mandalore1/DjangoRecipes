@@ -61,6 +61,17 @@ class RecipeFilterView(ListView):
         return queryset
 
 
+class RecipeIngredientView(ListView):
+    """Рецепты по ингредиенту"""
+    model = Recipe
+    context_object_name = "recipes"
+    template_name_suffix = "_ingredient"
+
+    def get_queryset(self):
+        ingredient = get_object_or_404(Ingredient, slug=self.kwargs.get("slug"))
+        return ingredient.recipes.all()
+
+
 class RecipeMyView(LoginRequiredMixin, ListView):
     """Мои рецепты"""
     model = Recipe

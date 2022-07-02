@@ -9,6 +9,9 @@ class Ingredient(models.Model):
     name = models.CharField(unique=True, max_length=150, blank=False, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="Slug")
 
+    def get_absolute_url(self):
+        return reverse("recipe_ingredient", kwargs={"slug": self.slug})
+
     def __str__(self):
         return self.name
 
