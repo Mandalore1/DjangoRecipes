@@ -61,6 +61,16 @@ class RecipeFilterView(ListView):
         return queryset
 
 
+class RecipeMyView(LoginRequiredMixin, ListView):
+    """Мои рецепты"""
+    model = Recipe
+    context_object_name = "recipes"
+    template_name_suffix = "_my"
+
+    def get_queryset(self):
+        return Recipe.objects.filter(user=self.request.user)
+
+
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     """Начальное создание рецепта"""
     model = Recipe
