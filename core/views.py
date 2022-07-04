@@ -96,6 +96,17 @@ class RecipeMyView(LoginRequiredMixin, ListView):
         return Recipe.objects.filter(user=self.request.user)
 
 
+class RecipeFavoriteView(LoginRequiredMixin, ListView):
+    """Избранные рецепты"""
+    model = Recipe
+    context_object_name = "recipes"
+    template_name_suffix = "_favorite"
+    paginate_by = 6
+
+    def get_queryset(self):
+        return self.request.user.favorite_recipes.all()
+
+
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     """Начальное создание рецепта"""
     model = Recipe
@@ -154,7 +165,7 @@ class RecipeAddToFavorites(LoginRequiredMixin, View):
 
         # Если запись об избранном существует, удаляем ее
         if user.favorite_recipes.filter(pk=recipe.pk).exists():
-            user.favorite_recipes.clear()
+            user.favorite_recipes.remove(recipe)
         # Иначе добавляем запись
         else:
             user.favorite_recipes.add(recipe)

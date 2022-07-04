@@ -7,7 +7,7 @@
 {% if request.user.is_authenticated %}
 <form class="d-inline" action="{% url 'recipe_add_to_favorite' recipe.pk %}" method="post">
     {% csrf_token %}
-    <button type="submit" class="border-0">
+    <button type="submit" class="border-0" style="background-color: #fff;">
         {% if recipe.is_favorite %}
         <i class="bi bi-star-fill" style="color: gold;" title="Убрать из избранного"></i>
         {% else %}

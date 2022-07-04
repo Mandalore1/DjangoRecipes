@@ -8,6 +8,7 @@ urlpatterns = [
     path("recipes/filter/", core.views.RecipeFilterView.as_view(), name="recipe_filter"),
     path("recipes/ingredient/<str:slug>", core.views.RecipeIngredientView.as_view(), name="recipe_ingredient"),
     path("recipes/my/", core.views.RecipeMyView.as_view(), name="recipe_my"),
+    path("recipes/favorite/", core.views.RecipeFavoriteView.as_view(), name="recipe_favorite"),
     path("recipes/create/", core.views.RecipeCreateView.as_view(), name="recipe_create"),
     path("recipes/<int:pk>/", core.views.RecipeDetailView.as_view(), name="recipe_detail"),
     path("recipes/<int:pk>/update", core.views.RecipeUpdateView.as_view(), name="recipe_update"),
