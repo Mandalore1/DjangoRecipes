@@ -69,6 +69,16 @@ class RecipeFilterView(ListView):
             queryset = queryset.filter(user__username=self.request.GET.get("user"))
         if "title" in self.request.GET:
             queryset = queryset.filter(title__icontains=self.request.GET.get("title"))
+        if "order_by" in self.request.GET:
+            order_by = self.request.GET["order_by"]
+            orderings = {
+                "views": "-views",
+                "title": "title",
+                "oldest": "created_at",
+                "newest": "-created_at",
+            }
+            if order_by in orderings:
+                queryset = queryset.order_by(orderings[order_by])
 
         return queryset
 

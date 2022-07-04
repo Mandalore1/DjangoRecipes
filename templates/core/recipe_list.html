@@ -6,7 +6,6 @@
 
 {% block content %}
 {% include "core/include/_filter.html" %}
-<a href="{% url 'recipe_create'%}" class="btn btn-primary mb-3">Создать новый рецепт</a>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for recipe in recipes %}
     <div class="col">
@@ -34,5 +33,6 @@
     </div>
     {% endfor %}
 </div>
+<a href="{% url 'recipe_create'%}" class="btn btn-primary mt-3">Создать новый рецепт</a>
 {% include 'core/include/_pagination.html' %}
 {% endblock content %}
