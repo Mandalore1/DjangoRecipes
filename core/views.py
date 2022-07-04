@@ -52,6 +52,7 @@ class RecipeListView(ListView):
     model = Recipe
     queryset = Recipe.objects.filter(is_published=True)
     context_object_name = "recipes"
+    paginate_by = 6
 
 
 class RecipeFilterView(ListView):
@@ -59,6 +60,7 @@ class RecipeFilterView(ListView):
     model = Recipe
     context_object_name = "recipes"
     template_name_suffix = "_filter"
+    paginate_by = 6
 
     def get_queryset(self):
         queryset = Recipe.objects.filter(is_published=True)
@@ -76,6 +78,7 @@ class RecipeIngredientView(ListView):
     model = Recipe
     context_object_name = "recipes"
     template_name_suffix = "_ingredient"
+    paginate_by = 6
 
     def get_queryset(self):
         ingredient = get_object_or_404(Ingredient, slug=self.kwargs.get("slug"))
@@ -87,6 +90,7 @@ class RecipeMyView(LoginRequiredMixin, ListView):
     model = Recipe
     context_object_name = "recipes"
     template_name_suffix = "_my"
+    paginate_by = 6
 
     def get_queryset(self):
         return Recipe.objects.filter(user=self.request.user)
