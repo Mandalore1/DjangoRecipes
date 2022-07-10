@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 
 
 class Ingredient(models.Model):
@@ -59,3 +60,20 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = "Ингредиент рецепта"
         verbose_name_plural = "Ингредиенты рецептов"
+
+
+class Comment(models.Model):
+    """Комментарий рецепта"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="comments")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, verbose_name="Рецепт", related_name="comments")
+    text = RichTextField(verbose_name="Текст комментария")
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, verbose_name="Родительский комментарий", null=True,
+                               blank=True, related_name="replies")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
+
+    def __str__(self):
+        return f"{self.recipe.title} ({self.user.username} {self.created_at})"
+
+    class Meta:
+        verbose_name = "Комментарий рецепта"
+        verbose_name_plural = "Комментарии рецептов"

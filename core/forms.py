@@ -1,6 +1,6 @@
 import django.forms as forms
 
-from core.models import Recipe
+from core.models import Recipe, Comment
 
 
 class RecipeCreationForm(forms.ModelForm):
@@ -24,4 +24,14 @@ class RecipeForm(forms.ModelForm):
             "description": forms.Textarea(attrs={"class": "form-control"}),
             "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "is_published": forms.CheckboxInput(attrs={"class": "form-check-input"})
+        }
+
+
+class CommentForm(forms.ModelForm):
+    """Форма комментария"""
+    class Meta:
+        model = Comment
+        fields = ("text", "parent")
+        widgets = {
+            "parent": forms.HiddenInput()
         }

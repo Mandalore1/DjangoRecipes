@@ -11,6 +11,7 @@ urlpatterns = [
     path("recipes/favorite/", core.views.RecipeFavoriteView.as_view(), name="recipe_favorite"),
     path("recipes/create/", core.views.RecipeCreateView.as_view(), name="recipe_create"),
     path("recipes/<int:pk>/", core.views.RecipeDetailView.as_view(), name="recipe_detail"),
+    path("recipes/<int:pk>/add_comment", core.views.RecipeCommentAddView.as_view(), name="recipe_comment"),
     path("recipes/<int:pk>/update", core.views.RecipeUpdateView.as_view(), name="recipe_update"),
     path("recipes/<int:pk>/delete", core.views.RecipeDeleteView.as_view(), name="recipe_delete"),
     path("recipes/<int:pk>/add_to_favorite", core.views.RecipeAddToFavorites.as_view(), name="recipe_add_to_favorite"),

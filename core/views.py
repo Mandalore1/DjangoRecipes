@@ -10,8 +10,8 @@ from django.views import View
 
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from core.forms import RecipeCreationForm, RecipeForm
-from core.models import Recipe, RecipeIngredient, Ingredient
+from core.forms import RecipeCreationForm, RecipeForm, CommentForm
+from core.models import Recipe, RecipeIngredient, Ingredient, Comment
 
 
 def _add_ingredients_to_context(context, recipe):
@@ -42,9 +42,48 @@ class RecipeDetailView(DetailView):
         return recipe
 
     def get_context_data(self, **kwargs):
-        """Добавляем в контекст ингредиенты рецепта"""
+        """Добавляем в контекст ингредиенты рецепта и комментарии"""
         context = super().get_context_data(**kwargs)
-        return _add_ingredients_to_context(context, self.object)
+
+        # Ингредиенты
+        context = _add_ingredients_to_context(context, self.object)
+
+        # Комментарии
+        comments = Comment.objects.filter(recipe=self.object).select_related("user__additional_info", "parent__user")\
+            .order_by("-created_at")
+        context["comments"] = comments
+
+        # Форма комментирования
+        context["comment_form"] = CommentForm()
+
+        return context
+
+
+class RecipeCommentAddView(LoginRequiredMixin, View):
+    """Добавление комментария"""
+    def post(self, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, pk=self.kwargs["pk"])
+        user = self.request.user
+
+        comment_form = CommentForm(self.request.POST)
+        if comment_form.is_valid():
+            # Проверяем, что родительский комментарий ссылается на тот же рецепт
+            parent = comment_form.cleaned_data["parent"]
+            if parent:
+                parent = Comment.objects.get(pk=parent.pk)
+                if parent.recipe != recipe:
+                    messages.error(self.request, "Не удалось добавить комментарий!")
+                    return redirect("recipe_detail", self.kwargs["pk"])
+
+            comment = comment_form.save(commit=False)
+            comment.recipe = recipe
+            comment.user = user
+            comment.save()
+            messages.success(self.request, "Комментарий добавлен успешно!")
+        else:
+            messages.error(self.request, "Не удалось добавить комментарий!")
+
+        return redirect("recipe_detail", self.kwargs["pk"])
 
 
 class RecipeListView(ListView):
