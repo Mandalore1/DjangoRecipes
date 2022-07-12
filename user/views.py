@@ -8,9 +8,9 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, FormView
 
-from user.forms import LoginForm, UserMainInfoForm, UserAdditionalInfoForm
+from user.forms import LoginForm, UserMainInfoForm, UserAdditionalInfoForm, ContactForm
 from user.models import UserAdditionalInfo
 
 
@@ -102,4 +102,16 @@ class UserUpdateAdditionalInfoView(LoginRequiredMixin, SameUserMixin, UpdateView
     def form_valid(self, form):
         messages.success(self.request, "Данные успешно изменены!")
         self.success_url = reverse_lazy("user_update_info", kwargs=self.kwargs)
+        return super().form_valid(form)
+
+
+class ContactView(FormView):
+    form_class = ContactForm
+    template_name = "user/contact_us.html"
+    success_url = reverse_lazy("user_contact_us")
+
+    def form_valid(self, form):
+        form.send_email_message()
+        messages.success(self.request, "Ваше сообщение успешно отправлено!")
+        # print(form.cleaned_data["name"], form.cleaned_data["email"], form.cleaned_data["message"], sep="\n")
         return super().form_valid(form)

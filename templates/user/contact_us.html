@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Cвязаться с нами{% endblock title %}
+{% block h1 %}Cвязаться с нами{% endblock h1 %}
+
+{% block content %}
+<form class="mt-2 mb-2" method="post" action="{% url 'user_contact_us' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+</form>
+{% endblock content %}
