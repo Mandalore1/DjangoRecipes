@@ -67,6 +67,7 @@
 
 <h2 class="mt-3">Комментарии:</h2>
 <div>
+    {% if user.is_authenticated %}
     <p>Оставить комментарий:</p>
     <form action="{% url 'recipe_comment' recipe.pk %}" method="post" class="mb-3">
         {% csrf_token %}
@@ -76,6 +77,7 @@
 
         <button type="submit" class="btn btn-primary btn-block">Отправить</button>
     </form>
+    {% endif %}
     {% for comment in comments %}
     <div>
         <a name="comment{{ comment.pk }}"></a>

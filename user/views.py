@@ -113,5 +113,4 @@ class ContactView(FormView):
     def form_valid(self, form):
         form.send_email_message()
         messages.success(self.request, "Ваше сообщение успешно отправлено!")
-        # print(form.cleaned_data["name"], form.cleaned_data["email"], form.cleaned_data["message"], sep="\n")
         return super().form_valid(form)
